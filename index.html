@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Educativo - Prevención</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- Background Video (Dual for Crossfade) -->
+    <video class="bg-video" id="bg-video-1" autoplay muted>
+        <source src="./assets/videos/background-video-animate.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video" id="bg-video-2" muted style="opacity: 0;">
+        <source src="./assets/videos/background-video-animate.mp4" type="video/mp4">
+    </video>
+
+    <!-- Audio Elements -->
+    <audio id="audio-intro" loop>
+        <source src="./assets/audio/intro-menu.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio-gameplay" loop>
+        <source src="./assets/audio/gameplay.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <h1>HOMBRES EN PROGRESO</h1>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <p>CARGANDO MISIÓN...</p>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE INICIO -->
+    <div id="start-screen" class="start-screen" style="display: none;">
+        <div class="start-content">
+            <h1 class="game-title">MISIÓN CERO VIOLENCIA</h1>
+            <p class="subtitle">¿ESTÁS LISTO PARA EL CAMBIO?</p>
+
+            <div class="player-selection">
+                <div class="selection-item">
+                    <button class="btn-select" data-players="2">2 JUGADORES</button>
+                </div>
+                <div class="selection-item">
+                    <button class="btn-select" data-players="3">3 JUGADORES</button>
+                </div>
+                <div class="selection-item">
+                    <button class="btn-select" data-players="4">4 JUGADORES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN GAME CONTAINER -->
+    <div class="main-container" style="display:none;" id="game-container">
+        <!-- Volume Control (Inside Main for Z-Index handling or Fixed) -->
+        <div id="volume-control" class="volume-control">
+            <label for="volume-slider">VOLUMEN</label>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
+        </div>
+
+        <h1 class="game-title-ingame">MISIÓN CERO VIOLENCIA</h1>
+
+        <div class="game-area">
+            <div id="tablero" class="tablero-grid"></div>
+
+            <div class="sidebar">
+                <div class="turno-info">
+                    <h3>TURNO DE:</h3>
+                    <div id="jugador-activo-avatar" class="avatar-display"></div>
+                    <span id="nombre-jugador">JUGADOR 1</span>
+                </div>
+
+                <div class="dado-container">
+                    <div id="dado-visual" class="dado-numero">?</div>
+                    <button id="btn-lanzar" class="btn-action">TIRAR DADO</button>
+                </div>
+
+                <!-- Player List Status -->
+                <div id="lista-jugadores" class="lista-jugadores">
+                    <!-- Dynamic content -->
+                </div>
+
+                <!-- Mini Terminal Log -->
+                <div class="terminal-log-sidebar">
+                    <div class="terminal-header">REGISTRO DE MISIÓN</div>
+                    <div class="log-content" id="log-juego">
+                        <div class="log-line">> SISTEMA LISTO...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./scripts/script.js"></script>
+</body>
+
+</html>
