@@ -70,8 +70,28 @@ Primero se responde el Quiz, luego se juega el minijuego.
 
 ---
 
-## 5. Banco de Retos General (Azar)
-Estos retos salen en las casillas marcadas con "?" (3, 18, 33, 57). No tienen respuesta "correcta/incorrecta" en código; dependen de la honestidad del grupo.
+---
+
+## 5. Retos Físico-Emocionales (Escaneo Biológico)
+Casillas: 4, 9, 13, 16, 19, 23, 26, 31, 37, 43.
+
+Este sistema es de **Autoconciencia**. El jugador responde y luego **DEBE** realizar la acción física.
+
+**Ejemplos de Dinámica:**
+1.  **Pregunta:** "Cuando sientes enojo, tu cuerpo suele..."
+    *   *Feedback:* "El cuerpo reacciona para la acción."
+    *   *Acción:* Respirar profundo 3 veces.
+2.  **Pregunta:** "Si sientes celos..."
+    *   *Feedback:* "Señala una necesidad no satisfecha."
+    *   *Acción:* Nombrar una cualidad positiva propia.
+3.  **Pregunta:** "Cuando estás triste..."
+    *   *Feedback:* "Escuchar al cuerpo es vital."
+    *   *Acción:* Estirar brazos 10 segundos.
+
+---
+
+## 6. Banco de Retos General (Azar)
+Estos retos salen en las casillas marcadas con "?" (3, 6, 11, 18, 20, 24, 27, 33, 39, 44, 47, 57). No tienen respuesta "correcta/incorrecta".
 
 1.  **Abrazo con permiso:** Pide permiso antes de abrazar.
 2.  **Pregunta poderosa:** Pregunta "¿Qué necesitas hoy?".

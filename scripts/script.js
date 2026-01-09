@@ -83,24 +83,34 @@ const desbloqueos = [
 const casillasEspeciales = {
     // Retos distribuidos
     3: { tipo: 'reto' },
-    6: { tipo: 'reto' }, // Added
+    4: { tipo: 'retoFisico' }, // NEW
+    6: { tipo: 'reto' },
     8: { tipo: 'adivinanza' },
-    11: { tipo: 'reto' }, // Added
+    9: { tipo: 'retoFisico' }, // NEW
+    11: { tipo: 'reto' },
     12: { tipo: 'desbloqueo', id: 'reto5' },
+    13: { tipo: 'retoFisico' }, // NEW
+    16: { tipo: 'retoFisico' }, // NEW
     18: { tipo: 'reto' },
-    20: { tipo: 'reto' }, // Added
+    19: { tipo: 'retoFisico' }, // NEW
+    20: { tipo: 'reto' },
     22: { tipo: 'adivinanza' },
-    24: { tipo: 'reto' }, // Added
-    27: { tipo: 'reto' }, // Added
+    23: { tipo: 'retoFisico' }, // NEW
+    24: { tipo: 'reto' },
+    26: { tipo: 'retoFisico' }, // NEW
+    27: { tipo: 'reto' },
     28: { tipo: 'desbloqueo', id: 'reto6' },
+    31: { tipo: 'retoFisico' }, // NEW
     33: { tipo: 'reto' },
+    37: { tipo: 'retoFisico' }, // NEW
     38: { tipo: 'adivinanza' },
-    39: { tipo: 'reto' }, // Added
+    39: { tipo: 'reto' },
     42: { tipo: 'desbloqueo', id: 'reto7' },
-    44: { tipo: 'reto' }, // Added
+    43: { tipo: 'retoFisico' }, // NEW
+    44: { tipo: 'reto' },
     48: { tipo: 'adivinanza' },
-    57: { tipo: 'reto' }, // (This seems > 49, but leaving existing loop logic safe)
-    47: { tipo: 'reto' }, // Added
+    57: { tipo: 'reto' },
+    47: { tipo: 'reto' },
 
     // Portales
     10: { tipo: 'portal', msg: '¡UN PORTAL MISTERIOSO!' },
@@ -309,6 +319,11 @@ function crearTablero() {
                 }
                 else if (casillasEspeciales[i].sub === 'termometro') div.classList.add('casilla-reg-termo');
                 else div.classList.add('casilla-regulacion'); // Fallback
+            } else if (casillasEspeciales[i].tipo === 'retoFisico') {
+                div.classList.add('casilla-fisico');
+                div.style.backgroundImage = "url('./assets/sprites/tile_physio.png')";
+                div.style.backgroundSize = "cover";
+                div.style.boxShadow = "inset 0 0 10px #2ECC71";
             }
         }
 
@@ -593,6 +608,8 @@ async function verificarCasilla(jugador) {
             lanzarRetoMaestro2(jugador);
         } else if (evento.tipo === 'retoRegulacion') {
             lanzarRetoRegulacion(jugador, evento.sub);
+        } else if (evento.tipo === 'retoFisico') {
+            lanzarRetoFisico(jugador);
         }
     } else {
         cambiarTurno();
@@ -1013,13 +1030,124 @@ function lanzarAdivinanza(jugador) {
                     color: '#fff'
                 }).then(() => cambiarTurno());
             }
-        } else {
-            cambiarTurno();
         }
     });
 }
 
-// Reto Maestro 2.0 Logic
+// =======================
+// RETOS FÍSICO-EMOCIONALES
+// =======================
+const retoFisicoData = [
+    {
+        q: "Cuando sientes enojo, tu cuerpo suele:",
+        opts: ["Tensarse", "Acelerarse", "Quedarse quieto", "No lo notas"],
+        feedback: "¡Muy común! El cuerpo reacciona para la acción.",
+        reto: "Respira profundo 3 veces llevando el aire al abdomen. Luego di: “Puedo calmarme sin dañar a nadie.”"
+    },
+    {
+        q: "Si algo te incomoda, tú normalmente:",
+        opts: ["Te quedas callado", "Reaccionas fuerte", "Te alejas", "Lo dices con dificultad"],
+        feedback: "Reconocer la incomodidad es el primer paso.",
+        reto: "Coloca una mano en el pecho y otra en el abdomen. Nombra una emoción que hayas sentido hoy."
+    },
+    {
+        q: "Cuando alguien dice algo que te molesta, tu primer impulso es:",
+        opts: ["Responder agresivamente", "Ignorar", "Bromear", "Pensar antes de actuar"],
+        feedback: "Pensar antes de actuar es el ideal de un Agente.",
+        reto: "Cuenta lentamente hasta 5 antes de hablar. Imagina una respuesta respetuosa."
+    },
+    {
+        q: "Cuando estás triste, tu cuerpo te pide:",
+        opts: ["Movimiento", "Silencio", "Compañía", "Distracción"],
+        feedback: "Escuchar lo que pide tu cuerpo es vital.",
+        reto: "Estira brazos y hombros durante 10 segundos. Nombra algo que te ayude cuando estás triste."
+    },
+    {
+        q: "Si ves una situación injusta, tú sueles:",
+        opts: ["Mirar a otro lado", "Sentir nervios", "Querer ayudar", "No saber qué hacer"],
+        feedback: "Ese impulso de ayudar es tu valentía interior.",
+        reto: "Da un paso hacia adelante simbólico y di: “Pedir ayuda también es una forma de actuar.”"
+    },
+    {
+        q: "Cuando te equivocas, tu emoción principal es:",
+        opts: ["Vergüenza", "Enojo", "Culpa", "Miedo"],
+        feedback: "Errar es humano, sentir miedo es normal.",
+        reto: "Coloca la mano en el corazón y di: “Equivocarme no me hace una mala persona.”"
+    },
+    {
+        q: "Si alguien te pide que te detengas, tú:",
+        opts: ["Insistes", "Te molestas", "Te detienes", "Te confundes"],
+        feedback: "Detenerse muestra un respeto enorme.",
+        reto: "Da un paso atrás y respira profundo una vez."
+    },
+    {
+        q: "Cuando estás muy alterado, tu cuerpo:",
+        opts: ["Se acelera", "Se endurece", "Se agota", "No lo notas"],
+        feedback: "Esa aceleración es energía que necesita canalizarse.",
+        reto: "Sacude suavemente manos y brazos por 10 segundos para soltar tensión."
+    },
+    {
+        q: "Si sientes celos, eso significa que:",
+        opts: ["Falta control", "Hay inseguridad", "Hay amor", "Es normal sentirlo"],
+        feedback: "A menudo señala una necesidad no satisfecha o miedo.",
+        reto: "Nombra una cualidad positiva tuya en voz alta."
+    },
+    {
+        q: "Cuando necesitas calmarte, lo más efectivo para ti es:",
+        opts: ["Respirar", "Moverte", "Hablar", "Estar solo"],
+        feedback: "Conocer tu propia medicina es poder.",
+        reto: "¡Prueba tu método ahora mismo por 10 segundos!"
+    }
+];
+
+function lanzarRetoFisico(jugador) {
+    const data = retoFisicoData[Math.floor(Math.random() * retoFisicoData.length)];
+
+    // Construct Options HTML
+    let optsHtml = '<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">';
+    data.opts.forEach(opt => {
+        optsHtml += `<button class="game-opt-btn aesthetic-btn" onclick="Swal.clickConfirm()">${opt}</button>`;
+    });
+    optsHtml += '</div>';
+
+    Swal.fire({
+        title: 'ESCANEO EMOCIONAL',
+        html: `
+            <div style="margin-bottom: 10px;">
+                <img src="./assets/sprites/tile_physio.png" style="width: 80px; height: 80px; animation: pulse 2s infinite;">
+            </div>
+            <p style="font-size: 1.1em; color: #2ECC71; font-family: 'Press Start 2P'; margin-bottom: 20px;">SISTEMA BIOLÓGICO DETECTADO</p>
+            <p style="font-size: 1.2em; color: #fff;">"${data.q}"</p>
+            ${optsHtml}
+        `,
+        showConfirmButton: false, // Buttons handle click
+        background: '#0a0a0a',
+        color: '#fff',
+        allowOutsideClick: false,
+        width: 600
+    }).then(() => {
+        // Phase 2: The Challenge
+        Swal.fire({
+            title: '¡SINCRO COMPLETADA!',
+            html: `
+                <p style="color: #F1C40F; font-style: italic; margin-bottom: 20px;">${data.feedback}</p>
+                <div style="background: #222; padding: 20px; border: 2px dashed #2ECC71; border-radius: 10px;">
+                    <h3 style="color: #2ECC71; margin-top: 0;">RETO DE ACTIVACIÓN</h3>
+                    <p style="font-size: 1.3em;">${data.reto}</p>
+                </div>
+            `,
+            icon: 'success',
+            background: '#0a0a0a',
+            color: '#fff',
+            confirmButtonText: '¡HECHO!',
+            confirmButtonColor: '#2ECC71'
+        }).then(() => {
+            processSuccess(jugador, { premioMsg: "CONEXIÓN MENTE-CUERPO", premioDesc: "Has reforzado tu inteligencia emocional. Avanzas 2 casillas." });
+        });
+    });
+}
+
+
 // Reto Maestro 2.0 Logic (Supports A/B or Multiple Choice)
 const retoMaestroData = [
     {

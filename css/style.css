@@ -1156,3 +1156,211 @@ body.swal2-shown {
         width: 90%;
     }
 }
+
+/* --- RETRO BUTTONS FOR QUIZ --- */
+.game-opt-btn {
+    background: #000;
+    color: #2ECC71;
+    /* Retro Green */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    padding: 15px;
+    border: 4px solid #2ECC71;
+    box-shadow: 4px 4px 0px #005f20;
+    /* Block shadow */
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: left;
+    transition: all 0.1s;
+    margin-bottom: 10px;
+    width: 100%;
+    line-height: 1.5;
+}
+
+.game-opt-btn:hover {
+    background: #2ECC71;
+    color: #000;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #005f20;
+}
+
+.game-opt-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+
+/* --- START SCREEN OVERHAUL --- */
+.start-content {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 40px;
+    border: 4px solid var(--p1-color);
+    border-radius: 10px;
+    text-align: center;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+.start-content::before {
+    content: "";
+    /* Scanline effect */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.intro-text-block p {
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
+    color: #dfdfdf;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.intro-text-block strong {
+    color: var(--p1-color);
+    font-size: 1.2em;
+}
+
+.mission-box {
+    border: 2px dashed var(--p2-color);
+    padding: 20px;
+    margin: 20px 0;
+    background: rgba(0, 0, 0, 0.5);
+    animation: pulseBorder 3s infinite;
+}
+
+.mission-box h2 {
+    color: var(--p2-color);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.cero-violencia {
+    color: var(--p4-color);
+    /* Red/Orange */
+    font-weight: bold;
+    font-size: 1.4em;
+    text-transform: uppercase;
+    animation: flashText 2s infinite;
+}
+
+@keyframes pulseBorder {
+    0% {
+        border-color: var(--p2-color);
+        box-shadow: 0 0 5px var(--p2-color);
+    }
+
+    50% {
+        border-color: #fff;
+        box-shadow: 0 0 15px var(--p2-color);
+    }
+
+    100% {
+        border-color: var(--p2-color);
+        box-shadow: 0 0 5px var(--p2-color);
+    }
+}
+
+@keyframes flashText {
+
+    0%,
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 10px var(--p4-color);
+    }
+
+    50% {
+        opacity: 0.7;
+        text-shadow: none;
+    }
+}
+
+/* Animations Stagger */
+.fade-in-1 {
+    opacity: 0;
+    animation: fadeInMove 1s ease-out forwards 0.5s;
+}
+
+.fade-in-2 {
+    opacity: 0;
+    animation: fadeInMove 1s ease-out forwards 2s;
+}
+
+/* Reads line 1 */
+.fade-in-3 {
+    opacity: 0;
+    animation: fadeInMove 1s ease-out forwards 4s;
+}
+
+/* Reads line 2 */
+.fade-in-4 {
+    opacity: 0;
+    animation: fadeInMove 1s ease-out forwards 6s;
+}
+
+/* Mission Box */
+.fade-in-5 {
+    opacity: 0;
+    animation: fadeInMove 1s ease-out forwards 9s;
+}
+
+/* Controls */
+
+@keyframes fadeInMove {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Glitch Title override */
+.game-title.glitch {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    color: #fff;
+    position: relative;
+    animation: glitch-skew 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+
+@keyframes glitch-skew {
+    0% {
+        transform: skew(0deg);
+    }
+
+    20% {
+        transform: skew(-2deg);
+    }
+
+    40% {
+        transform: skew(2deg);
+    }
+
+    60% {
+        transform: skew(-1deg);
+    }
+
+    80% {
+        transform: skew(1deg);
+    }
+
+    100% {
+        transform: skew(0deg);
+    }
+}
