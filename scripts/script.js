@@ -15,7 +15,7 @@ const retos = [
     "El reto del perdón: Recuerda una situación donde lastimaste sentimientos y cómo habrías podido actuar distinto.",
     "Aliado por un minuto: Di una frase para apoyar a mujeres o niñas.",
     "Corresponsabilidad en acción: Menciona una tarea del hogar que harás esta semana y por qué es justo.",
-    "Línea de la empatía: Menciona una situación de conflicto y c&oacutemio acompa&ntilde;arlo.",
+    "Línea de la empatía: Menciona una situación de conflicto y cómo acompañarlo.",
     "Stop, piensa y elige: Describe una situación de enojo y una alternativa no violenta.",
     "El reto de la vulnerabilidad: Completa: “A veces me cuesta pedir ayuda cuando…”.",
     "Detective de emociones: Pregunta a alguien qué emoción siente hoy y por qué.",
@@ -83,16 +83,24 @@ const desbloqueos = [
 const casillasEspeciales = {
     // Retos distribuidos
     3: { tipo: 'reto' },
+    6: { tipo: 'reto' }, // Added
     8: { tipo: 'adivinanza' },
+    11: { tipo: 'reto' }, // Added
     12: { tipo: 'desbloqueo', id: 'reto5' },
     18: { tipo: 'reto' },
+    20: { tipo: 'reto' }, // Added
     22: { tipo: 'adivinanza' },
+    24: { tipo: 'reto' }, // Added
+    27: { tipo: 'reto' }, // Added
     28: { tipo: 'desbloqueo', id: 'reto6' },
     33: { tipo: 'reto' },
     38: { tipo: 'adivinanza' },
+    39: { tipo: 'reto' }, // Added
     42: { tipo: 'desbloqueo', id: 'reto7' },
+    44: { tipo: 'reto' }, // Added
     48: { tipo: 'adivinanza' },
-    57: { tipo: 'reto' },
+    57: { tipo: 'reto' }, // (This seems > 49, but leaving existing loop logic safe)
+    47: { tipo: 'reto' }, // Added
 
     // Portales
     10: { tipo: 'portal', msg: '¡UN PORTAL MISTERIOSO!' },
@@ -473,10 +481,11 @@ function verificarFinalEvento(jugador) {
             title: 'JURAMENTO',
             html: `
                 <p style="text-align: left; line-height: 1.6;">
-                Yo, <b>${jugador.nombre}</b>, prometo:<br><br>
-                1. No usar la violencia para resolver conflictos.<br>
-                2. Respetar a todas las personas por igual.<br>
-                3. Ser valiente para pedir ayuda y ayudar a otros.<br>
+                Asumo el compromiso de cuidar mis palabras y mis acciones,<br>
+                reconociendo que pueden afectar a otras personas.<br>
+                Elijo respetar los límites, escuchar y relacionarme sin causar daño,<br>
+                incluso cuando me siento molesto o frustrado.<br><br>
+                <b>☑️ Acepto este compromiso</b>
                 </p>
             `,
             icon: 'warning',
@@ -1011,18 +1020,23 @@ function lanzarAdivinanza(jugador) {
 }
 
 // Reto Maestro 2.0 Logic
+// Reto Maestro 2.0 Logic (Supports A/B or Multiple Choice)
 const retoMaestroData = [
     {
         bg: 'url("./assets/sprites/tile_maestro.png")',
-        msg: "Un amigo insiste en que bebas alcohol aunque dijiste que no. ¿Qué haces?",
-        optA: "Beber para que no se burlen",
-        optB: "Mantener mi 'No' con firmeza",
+        msg: "Si una persona que quieres evita ciertas situaciones para “proteger” la relación, ¿qué tan apropiado es que tú intervengas en sus decisiones?",
+        options: [
+            { id: "A", text: "Es normal intervenir si lo hago por su bien." },
+            { id: "B", text: "Puedo opinar, pero la decisión final siempre es suya." },
+            { id: "C", text: "Es necesario intervenir para evitar que se equivoque." },
+            { id: "D", text: "Si me ama, debería aceptar mi intervención." }
+        ],
         correct: "B"
     },
     {
         bg: 'url("./assets/sprites/tile_maestro.png")',
         msg: "Ves que molestan a alguien en el chat del grupo. ¿Qué haces?",
-        optA: "Quedarme callado",
+        optA: "Quedarme callado", // Legacy A/B support
         optB: "Escribir que eso no está bien",
         correct: "B"
     }
@@ -1030,27 +1044,56 @@ const retoMaestroData = [
 
 function lanzarRetoMaestro2(jugador) {
     const reto = retoMaestroData[Math.floor(Math.random() * retoMaestroData.length)];
-    let timeLeft = 10;
+    let timeLeft = 15; // More time for reading 4 options
     let timerInterval;
+
+    // Build Form HTML based on data structure
+    let formHtml = '';
+
+    if (reto.options) {
+        // Multiple Choice (Radio)
+        formHtml = `<div style="text-align: left; margin-top: 10px;">`;
+        reto.options.forEach(opt => {
+            formHtml += `
+                <div style="margin-bottom: 10px; padding: 10px; background: #222; border-radius: 5px; cursor: pointer;" onclick="document.getElementById('opt-${opt.id}').click()">
+                    <input type="radio" name="maestro-opt" id="opt-${opt.id}" value="${opt.id}" style="margin-right: 10px;">
+                    <label style="cursor: pointer; color: #ddd;">${opt.id}) ${opt.text}</label>
+                </div>
+            `;
+        });
+        formHtml += `</div>`;
+    } else {
+        // Legacy A/B (Handled via Swal Confirm/Deny buttons, so empty form here)
+        formHtml = '';
+    }
 
     Swal.fire({
         title: '¡RETO MAESTRO!',
         html: `
             <div style="margin-bottom: 20px;">
-                <img src="./assets/sprites/tile_maestro.png" style="width: 100px; height: 100px; animation: pulse 1s infinite;">
+                <img src="./assets/sprites/tile_maestro.png" style="width: 80px; height: 80px; animation: pulse 1s infinite;">
             </div>
-            <p style="font-size: 1.2em;">${reto.msg}</p>
+            <p style="font-size: 1.1em; color: #F1C40F;">${reto.msg}</p>
+            ${formHtml}
             <div id="maestro-timer" style="font-size: 2em; color: #E74C3C; font-weight: bold; margin: 15px;">${timeLeft}s</div>
         `,
-        showConfirmButton: true,
-        showDenyButton: true,
-        confirmButtonText: reto.optA, // Option A
-        denyButtonText: reto.optB,    // Option B
+        showConfirmButton: !reto.options, // Show only if Legacy A/B
+        showDenyButton: !reto.options,    // Show only if Legacy A/B
+        confirmButtonText: reto.options ? 'ENVIAR RESPUESTA' : reto.optA,
+        denyButtonText: reto.options ? null : reto.optB,
         showCancelButton: false,
         background: '#080808',
         color: '#fff',
         allowOutsideClick: false,
         didOpen: () => {
+            // If options exist, show a custom confirm button for the form
+            if (reto.options) {
+                Swal.showLoading = false; // Ensure buttons are clickable
+                const confirmBtn = Swal.getConfirmButton();
+                confirmBtn.style.display = 'inline-block';
+                confirmBtn.innerText = 'CONFIRMAR DECISIÓN';
+            }
+
             const timerDisplay = document.getElementById('maestro-timer');
             timerInterval = setInterval(() => {
                 timeLeft--;
@@ -1063,19 +1106,37 @@ function lanzarRetoMaestro2(jugador) {
         },
         willClose: () => {
             clearInterval(timerInterval);
+        },
+        preConfirm: () => {
+            if (reto.options) {
+                const selected = document.querySelector('input[name="maestro-opt"]:checked');
+                if (!selected) {
+                    Swal.showValidationMessage('Debes seleccionar una opción');
+                    return false;
+                }
+                return selected.value;
+            }
+            return "A"; // Default for legacy btn
         }
     }).then((result) => {
+        let choice = '';
+
         if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
-            // Time out
             Swal.fire('¡TIEMPO AGOTADO!', 'Debes pensar rápido.', 'error').then(() => processFailure(jugador));
+            return;
+        }
+
+        if (reto.options) {
+            if (result.isConfirmed) choice = result.value;
         } else {
-            // Selected something
-            let choice = result.isConfirmed ? "A" : "B";
-            if (choice === reto.correct) {
-                processSuccess(jugador, { premioMsg: "¡DOMINIO TOTAL!", premioDesc: "Has tomado la decisión correcta bajo presión. Avanzas 5 casillas." });
-            } else {
-                Swal.fire('ERROR DE JUICIO', 'Esa no era la mejor opción.', 'error').then(() => processFailure(jugador));
-            }
+            // Legacy
+            choice = result.isConfirmed ? "A" : (result.isDenied ? "B" : "");
+        }
+
+        if (choice === reto.correct) {
+            processSuccess(jugador, { premioMsg: "¡DOMINIO TOTAL!", premioDesc: "Has tomado la decisión correcta bajo presión. Avanzas 5 casillas." });
+        } else {
+            Swal.fire('ERROR DE JUICIO', 'Esa no era la mejor opción.', 'error').then(() => processFailure(jugador));
         }
     });
 }
@@ -1117,7 +1178,7 @@ function lanzarRetoRegulacion(jugador, subTipo) {
                 background: '#080808',
                 color: '#fff'
             }).then((result) => {
-                if (result.value === 'B') {
+                if (result.isDenied) {
                     processSuccess(jugador, { premioMsg: "¡REGULACIÓN EXITOSA!", premioDesc: "Avanzas 3 casillas." });
                 } else {
                     Swal.fire({
@@ -1196,42 +1257,49 @@ function lanzarRetoRegulacion(jugador, subTipo) {
 
                     const loop = setInterval(() => {
                         if (isOverheated) {
-                            stability += 2;
+                            // Cooldown phase (Automatic)
+                            stability += 1.5; // Slower recovery punishment
+                            btn.innerText = `⚠️ ENFRIANDO (${Math.floor(stability)}%)...`;
+                            btn.style.background = "#333";
+
                             if (stability >= 100) {
                                 stability = 100;
                                 isOverheated = false;
                                 btn.disabled = false;
                                 btn.innerText = "⚡ TRANSFORMAR ⚡";
-                                status.innerText = "Sistema Re-establecido";
+                                btn.style.background = "#fff";
+                                status.innerText = "Sistema Listo";
                                 status.style.color = "#2ECC71";
                             }
                         } else if (isHolding) {
-                            energy += 0.8;
-                            stability -= 2.5;
+                            // Charging
+                            energy += 0.4;  // Slow charge (requires patience)
+                            stability -= 1.2; // Risk of overheat
 
                             if (stability <= 0) {
                                 stability = 0;
                                 triggerOverheat();
                             }
                         } else {
-                            energy -= 0.5;
-                            stability += 1.5;
+                            // Idling (Cooling down + Decay)
+                            energy -= 0.1; // Slow decay (don't punish releasing too much)
+                            stability += 2.0; // Fast manual recovery (encourage releasing)
                         }
 
+                        // Bounds
                         if (energy < 0) energy = 0;
                         if (energy >= 100) { energy = 100; completeTransformation(); }
                         if (stability > 100) stability = 100;
 
                         updateUI();
-                    }, 30);
+                    }, 20); // Faster tick rate (20ms) for smoother anim
 
                     const triggerOverheat = () => {
                         isOverheated = true;
                         isHolding = false;
                         btn.disabled = true;
-                        btn.innerText = "¡SOBRECALENTADO!";
-                        energy = Math.max(0, energy - 20);
-                        status.innerText = "¡ALERTA! Soltaste demasiada energía.";
+                        energy = Math.max(0, energy - 15); // Penalty
+                        status.innerText = "¡SISTEMA BLOQUEADO!";
                         status.style.color = "#E74C3C";
                         icon.style.animation = 'none';
                         swal.getPopup().classList.add('swal2-shake');

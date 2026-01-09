@@ -50,9 +50,10 @@ Respuestas correctas para desbloquear las letras de P-A-U-S-A:
 ## 3. Reto Maestro (Casilla 36)
 Situaciones de presión social con tiempo límite (10s).
 
-1.  **Situación:** Amigo insiste en que bebas alcohol.
-    *   ✅ **Correcta:** "Mantener mi 'No' con firmeza"
-    *   ❌ Incorrecta: "Beber para que no se burlen"
+1.  **Situación: Relaciones y Control**
+    *   **Pregunta:** "Si una persona que quieres evita ciertas situaciones para “proteger” la relación, ¿qué tan apropiado es que tú intervengas...?"
+    *   ✅ **Correcta:** Opción B ("Puedo opinar, pero la decisión final siempre es suya.")
+    *   ❌ Incorrectas: A (Intervenir por su bien), C (Evitar que equivoque), D (Si me ama acepta).
 2.  **Situación:** Molestan a alguien en el chat.
     *   ✅ **Correcta:** "Escribir que eso no está bien"
     *   ❌ Incorrecta: "Quedarme callado"
