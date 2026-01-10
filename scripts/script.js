@@ -82,51 +82,64 @@ const desbloqueos = [
 // Casillas Especiales (PORTALES, GUSANOS Y RETOS)
 const casillasEspeciales = {
     // Retos distribuidos
-    3: { tipo: 'reto' },
-    4: { tipo: 'retoFisico' }, // NEW
-    6: { tipo: 'reto' },
-    8: { tipo: 'adivinanza' },
-    9: { tipo: 'retoFisico' }, // NEW
+    1: { tipo: 'info', id: 1 }, // NEW (Reflexión)
+    2: { tipo: 'info', id: 2 }, // NEW (Reflexión)
+    3: { tipo: 'info', id: 3 }, // NEW (Reflexión) -> Was Reto (Moved to 57)
+    4: { tipo: 'info', id: 4 }, // NEW (Reflexión) -> Was Physio
+    5: { tipo: 'info', id: 5 }, // NEW (Reflexión)
+    6: { tipo: 'info', id: 6 }, // NEW (Reflexión) -> Was Reto
+    7: { tipo: 'info', id: 7 }, // NEW (Reflexión)
+    8: { tipo: 'info', id: 8 }, // NEW (Portal Info) -> Was Riddle (Moved to 17)
+    9: { tipo: 'info', id: 9 }, // NEW (Dato Curioso) -> Was Physio (Moved to 21)
+    10: { tipo: 'info', id: 10 }, // NEW (Portal Info) -> Was Portal (Moved to 29)
+    12: { tipo: 'info', id: 12 }, // NEW (Dato Curioso) -> Was Lock (Moved to 32)
+    15: { tipo: 'info', id: 15 }, // NEW (Reflexión Final) -> Was Snake (Moved to 34)
+
+    // MOVED MECHANICS (Preserving Gameplay Balance)
+    17: { tipo: 'adivinanza' }, // Moved from 8
+    21: { tipo: 'retoFisico' }, // Moved from 9
+    46: { tipo: 'portal', msg: '¡SALTO DIMENSIONAL!' }, // Moved from 29 (Requested)
+    32: { tipo: 'desbloqueo', id: 'reto5' }, // Moved from 12
+    34: { tipo: 'gusano', destino: 7, msg: '¡EL GUSANO TE DEVORA!' }, // Moved from 15
+
+    // Existing Mapping (Unchanged)
     11: { tipo: 'reto' },
-    12: { tipo: 'desbloqueo', id: 'reto5' },
-    13: { tipo: 'retoFisico' }, // NEW
-    16: { tipo: 'retoFisico' }, // NEW
+    13: { tipo: 'retoFisico' },
+    16: { tipo: 'retoFisico' },
     18: { tipo: 'reto' },
-    19: { tipo: 'retoFisico' }, // NEW
+    19: { tipo: 'retoFisico' },
     20: { tipo: 'reto' },
     22: { tipo: 'adivinanza' },
-    23: { tipo: 'retoFisico' }, // NEW
+    23: { tipo: 'retoFisico' },
     24: { tipo: 'reto' },
-    26: { tipo: 'retoFisico' }, // NEW
+    26: { tipo: 'retoFisico' },
     27: { tipo: 'reto' },
     28: { tipo: 'desbloqueo', id: 'reto6' },
-    31: { tipo: 'retoFisico' }, // NEW
+    31: { tipo: 'retoFisico' },
     33: { tipo: 'reto' },
-    37: { tipo: 'retoFisico' }, // NEW
+    37: { tipo: 'retoFisico' },
     38: { tipo: 'adivinanza' },
     39: { tipo: 'reto' },
     42: { tipo: 'desbloqueo', id: 'reto7' },
-    43: { tipo: 'retoFisico' }, // NEW
+    43: { tipo: 'retoFisico' },
     44: { tipo: 'reto' },
     48: { tipo: 'adivinanza' },
     57: { tipo: 'reto' },
     47: { tipo: 'reto' },
 
-    // Portales
-    10: { tipo: 'portal', msg: '¡UN PORTAL MISTERIOSO!' },
-    30: { tipo: 'portal', msg: '¡AGUJERO DE GUSANO!' },
+    // Portales (Remaining)
+    14: { tipo: 'portal', msg: '¡AGUJERO DE GUSANO!' }, // Moved from 30 (Requested)
     35: { tipo: 'portal', msg: '¡TELETRANSPORTACIÓN!' },
 
     // Reto Maestro
     36: { tipo: 'retoMaestro' },
 
     // Retos de Regulación
-    14: { tipo: 'retoRegulacion', sub: 'pausa' },
+    30: { tipo: 'retoRegulacion', sub: 'pausa' }, // Moved from 14 (Swapped)
     25: { tipo: 'retoRegulacion', sub: 'transforma' },
     40: { tipo: 'retoRegulacion', sub: 'termometro' },
 
-    // Gusanos (Peligro)
-    15: { tipo: 'gusano', destino: 7, msg: '¡EL GUSANO MACABRO TE DEVORA!' },
+    // Gusanos (Remaining)
     45: { tipo: 'gusano', destino: 32, msg: '¡EL GUSANO TE ESCUPE!' }
 };
 
@@ -254,14 +267,24 @@ document.querySelectorAll('.btn-select').forEach(btn => {
     });
 });
 
+// CHARACTER DATA (NUEVAS MASCULINIDADES)
+const PERSONAJES = {
+    1: { name: "TOMÁS", img: "./assets/avatars/char_tomas.png", role: "Aprender a sentir", bio: "Tomás aprendió que expresar emociones no lo hace débil. Reconocer lo que siente le ayuda a no reaccionar con violencia.", msg: "Sentir es humano." },
+    2: { name: "MATEO", img: "./assets/avatars/char_mateo.png", role: "Cuestionar lo aprendido", bio: "Mateo se pregunta si algunas ideas sobre el amor y el poder realmente son correctas. Cuestionar lo aprendido le permite elegir relaciones más sanas.", msg: "Cuestionar también es valentía." },
+    3: { name: "SEBASTIÁN", img: "./assets/avatars/char_sebastian.png", role: "Respetar límites", bio: "Sebastián entiende que querer a alguien implica escuchar y aceptar límites. El respeto guía sus decisiones.", msg: "El respeto incluye decir y aceptar un “no”." },
+    4: { name: "LUCAS", img: "./assets/avatars/char_lucas.png", role: "Elegir no dañar", bio: "Lucas sabe manejar sus emociones sin lastimar a otros. Elegir respeto es su forma de ser fuerte.", msg: "La verdadera fuerza es no dañar." }
+};
+
 function iniciarJuego(num) {
     jugadores = [];
     for (let i = 1; i <= num; i++) {
+        const pData = PERSONAJES[i] || PERSONAJES[1]; // Fallback
         jugadores.push({
             id: i,
-            nombre: `JUGADOR ${i}`,
+            nombre: pData.name, // Use Character Name
             color: `p${i}`,
-            posicion: 1
+            posicion: 1,
+            bioData: pData // Store bio data
         });
     }
 
@@ -305,6 +328,19 @@ function crearTablero() {
                 div.classList.add('casilla-adivinanza');
             } else if (casillasEspeciales[i].tipo === 'desbloqueo') {
                 div.classList.add('casilla-desbloqueo');
+            } else if (casillasEspeciales[i].tipo === 'info') {
+                div.classList.add('casilla-info');
+                let icon = 'tile_reflection.png';
+                if ([8, 10, 11].includes(i)) icon = 'tile_info_portal.png';
+                else if ([9, 12, 13].includes(i)) icon = 'tile_fact.png';
+                // Fallback or specific logic
+                if (i === 8 || i === 10) icon = 'tile_info_portal.png';
+                else if (i === 9 || i === 12) icon = 'tile_fact.png';
+
+                div.style.backgroundImage = `url('./assets/sprites/${icon}')`;
+                div.style.backgroundSize = "cover";
+                div.style.boxShadow = "inset 0 0 10px #9B59B6";
+            } else if (casillasEspeciales[i].tipo === 'retoRegulacion') {
             } else if (casillasEspeciales[i].tipo === 'retoMaestro') {
                 div.classList.add('casilla-maestro');
             } else if (casillasEspeciales[i].tipo === 'retoRegulacion') {
@@ -407,6 +443,7 @@ function actualizarListaJugadores() {
         avatar.style.backgroundImage = `url('./assets/avatars/avatar${j.id}.png')`;
 
         const name = document.createElement('span');
+        name.classList.add('player-name'); // Class for responsive hiding
         name.innerText = j.nombre;
         name.style.color = `var(--${j.color}-color)`;
 
@@ -422,10 +459,39 @@ function actualizarTurnoUI() {
         infoJugador.innerText = actual.nombre;
         infoJugador.style.color = `var(--${actual.color}-color)`;
     }
-    if (avatarDisplay) {
-        avatarDisplay.style.backgroundImage = `url('./assets/avatars/avatar${actual.id}.png')`;
-        avatarDisplay.style.borderColor = `var(--${actual.color}-color)`;
+
+    // Update Avatar (Full Body)
+    const avatarContainer = document.getElementById('jugador-activo-avatar');
+    if (avatarContainer) {
+        avatarContainer.style.backgroundImage = `url('${actual.bioData.img}')`;
+        avatarContainer.style.backgroundSize = 'contain';
+        avatarContainer.style.backgroundRepeat = 'no-repeat';
+        avatarContainer.style.backgroundPosition = 'center';
+        avatarContainer.style.height = '120px'; // Taller for full body
     }
+
+    // Update Bio (Dynamic Injection)
+    let bioPanel = document.getElementById('char-bio-panel');
+    if (!bioPanel) {
+        // Create if missing in sidebar-left
+        const parent = document.querySelector('.sidebar-left .panel-box');
+        if (parent) {
+            bioPanel = document.createElement('div');
+            bioPanel.id = 'char-bio-panel';
+            bioPanel.className = 'char-bio-box';
+            // Insert after meds or name?
+            parent.appendChild(bioPanel);
+        }
+    }
+
+    if (bioPanel) {
+        bioPanel.innerHTML = `
+            <div style="font-size:0.8em; color:#888; text-transform:uppercase; margin-bottom:5px;">${actual.bioData.role}</div>
+            <p style="font-size:0.85em; line-height:1.4; color:#ddd; margin-bottom: 8px;">${actual.bioData.bio}</p>
+            <div style="color:var(--${actual.color}-color); font-weight:bold; font-size:0.8em; font-style:italic;">"${actual.bioData.msg}"</div>
+        `;
+    }
+
     actualizarListaJugadores();
 }
 
@@ -610,6 +676,8 @@ async function verificarCasilla(jugador) {
             lanzarRetoRegulacion(jugador, evento.sub);
         } else if (evento.tipo === 'retoFisico') {
             lanzarRetoFisico(jugador);
+        } else if (evento.tipo === 'info') {
+            lanzarInfoModal(jugador, evento.id);
         }
     } else {
         cambiarTurno();
@@ -632,7 +700,7 @@ function lanzarDesbloqueo(jugador, retoId) {
 
     // Create initial mask array matching target length
     const initialMask = Array(data.palabra.length).fill('_');
-    const maxAttempts = 5;
+    const maxAttempts = 2; // Updated: Limit to 2 attempts
 
     if (retoId === 'reto7') {
         iniciarMicroSituacionesReto7(jugador, data, initialMask);
@@ -696,9 +764,11 @@ function iniciarMicroSituacionesReto7(jugador, data, currentMaskArray, step = 0)
         background: '#080808',
         color: '#fff',
         allowOutsideClick: false,
+        confirmButtonColor: '#2ECC71',
+        denyButtonColor: '#2ECC71',
         customClass: {
-            confirmButton: 'swal2-confirm-blue', // Need to style this if not existing, or just standard
-            denyButton: 'swal2-confirm-green'
+            // confirmButton: 'swal2-confirm-blue', // Removed specific color class
+            // denyButton: 'swal2-confirm-green'
         }
     }).then((result) => {
         let choice = '';
@@ -854,14 +924,18 @@ function gestionarIntentoDesbloqueo(jugador, data, currentMaskArray, attemptsLef
                 // Incorrect
                 attemptsLeft--;
                 if (attemptsLeft > 0) {
+                    let hintHtml = '';
+                    if (attemptsLeft === 1 && data.pista) {
+                        hintHtml = `<div style="margin-top:10px; padding:10px; background:#333; border-radius:5px; color:#F1C40F; font-size: 0.9em;">💡 PISTA: ${data.pista}</div>`;
+                    }
+
                     Swal.fire({
                         icon: 'error',
                         title: '¡BLOQUEADO!',
-                        text: 'La palabra es incorrecta. Inténtalo de nuevo.',
+                        html: `<p>La palabra es incorrecta. Inténtalo de nuevo.</p>${hintHtml}`,
                         background: '#080808',
                         color: '#C0392B',
-                        timer: 1500,
-                        showConfirmButton: false
+                        confirmButtonText: 'REINTENTAR'
                     }).then(() => {
                         gestionarIntentoDesbloqueo(jugador, data, currentMaskArray, attemptsLeft);
                     });
@@ -919,6 +993,11 @@ function processSuccess(jugador, premio) {
         color: '#2ECC71',
         confirmButtonText: 'AVANZAR'
     }).then(async () => {
+
+        // AWARD MEDAL
+        awardMedal(jugador); // Visual incentive
+
+        const newPos = Math.min(jugador.posicion + avance, TOTAL_CASILLAS);
         // Move player forward
         for (let i = 0; i < avance; i++) {
             jugador.posicion++;
@@ -986,8 +1065,22 @@ function logSystem(msg) {
 // ==========================================
 // ADDITIONAL CHALLENGE FUNCTIONS
 // ==========================================
+
+
+// DEDUPING LOGIC
+if (!window.usedRetos) window.usedRetos = new Set();
+
 function lanzarReto(jugador) {
-    const reto = retos[Math.floor(Math.random() * retos.length)];
+    // Filter available challenges
+    let available = retos.filter(r => !window.usedRetos.has(r));
+    if (available.length === 0) {
+        window.usedRetos.clear(); // Reset if all used
+        available = retos;
+    }
+
+    const reto = available[Math.floor(Math.random() * available.length)];
+    window.usedRetos.add(reto); // Mark as used
+
     Swal.fire({
         title: '¡RETO DE VALENTÍA!',
         text: reto,
@@ -1007,7 +1100,20 @@ function lanzarReto(jugador) {
 }
 
 function lanzarAdivinanza(jugador) {
-    const adivinanza = adivinanzas[Math.floor(Math.random() * adivinanzas.length)];
+    // Deduping for Riddles
+    if (!window.usedAdivinanzas) window.usedAdivinanzas = new Set();
+
+    // We store INDEXES for objects or JSON stringify
+    // Let's use referencing by object since Set supports it
+    let available = adivinanzas.filter(r => !window.usedAdivinanzas.has(r));
+    if (available.length === 0) {
+        window.usedAdivinanzas.clear();
+        available = adivinanzas;
+    }
+
+    const adivinanza = available[Math.floor(Math.random() * available.length)];
+    window.usedAdivinanzas.add(adivinanza);
+
     Swal.fire({
         title: 'ADIVINANZA SABIA',
         html: `<p style="font-size: 1.1em; line-height: 1.5;">${adivinanza.pregunta}</p>`,
@@ -1209,6 +1315,8 @@ function lanzarRetoMaestro2(jugador) {
         showDenyButton: !reto.options,    // Show only if Legacy A/B
         confirmButtonText: reto.options ? 'ENVIAR RESPUESTA' : reto.optA,
         denyButtonText: reto.options ? null : reto.optB,
+        confirmButtonColor: '#2ECC71', // User Request: Both Green
+        denyButtonColor: '#2ECC71',
         showCancelButton: false,
         background: '#080808',
         color: '#fff',
@@ -1599,8 +1707,146 @@ function lanzarRetoRegulacion(jugador, subTipo) {
 }
 
 
+
 function sonido(tipo) {
     if (audioGameplay && !audioGameplay.paused) {
         // Simple sfx placeholder - in a real app better sfx management
+    }
+}
+
+// =======================
+// CASILLAS INFORMATIVAS (REFLEXIÓN, DATO, PORTAL)
+// =======================
+const infoData = {
+    1: { title: "REFLEXIÓN", msg: "La violencia no siempre golpea.<br>A veces controla, humilla o hace sentir miedo.", icon: "tile_reflection.png", sub: "Visibilizar formas de violencia no física." },
+    2: { title: "REFLEXIÓN", msg: "Si alguien te hace sentir menos, eso no es respeto.", icon: "tile_reflection.png", sub: "Diferenciar relaciones sanas." },
+    3: { title: "REFLEXIÓN", msg: "Amar nunca debería doler, asustar ni hacer sentir culpa.", icon: "tile_reflection.png", sub: "Cuestionar creencias erróneas." },
+    4: { title: "REFLEXIÓN", msg: "Ser fuerte también es detenerse antes de hacer daño.", icon: "tile_reflection.png", sub: "Fortaleza es autorregulación." },
+    5: { title: "REFLEXIÓN", msg: "Las emociones no son malas.<br>Lo peligroso es no saber manejarlas.", icon: "tile_reflection.png", sub: "Educación emocional." },
+    6: { title: "REFLEXIÓN", msg: "Controlar a otra persona también es una forma de violencia.", icon: "tile_reflection.png", sub: "Desnaturalizar el control." },
+    7: { title: "REFLEXIÓN", msg: "Si alguien tiene miedo de decir lo que piensa, algo no está bien.", icon: "tile_reflection.png", sub: "Comunicación segura." },
+    8: { title: "PORTAL DE DERECHOS", msg: "La ONU reconoce la violencia de género como una violación de los derechos humanos.", icon: "tile_info_portal.png", sub: "Estándares internacionales." },
+    9: { title: "DATO CURIOSO", msg: "Muchas conductas violentas se aprenden.<br>Eso significa que también se pueden desaprender.", icon: "tile_fact.png", sub: "Mensaje esperanzador." },
+    10: { title: "LEY INTERNACIONAL", msg: "La Convención CEDAW protege el derecho de las mujeres a vivir sin violencia.", icon: "tile_info_portal.png", sub: "Instrumentos legales." },
+    12: { title: "ESTADÍSTICA GLOBAL", msg: "Según la OMS, 1 de cada 3 mujeres en el mundo ha vivido violencia.", icon: "tile_fact.png", sub: "Conciencia global." },
+    15: { title: "REFLEXIÓN FINAL", msg: "Cada decisión cuenta. La meta es cero violencia.", icon: "tile_reflection.png", sub: "Mensaje central." }
+};
+
+function lanzarInfoModal(jugador, id) {
+    const data = infoData[id] || { title: "INFO", msg: "Mensaje no encontrado", icon: "tile_reflection.png" };
+    Swal.fire({
+        title: data.title,
+        html: `
+            <div style="margin-bottom: 15px;">
+                <img src="./assets/sprites/${data.icon}" style="width: 80px; height: 80px; filter: drop-shadow(0 0 5px #fff); animation: float 3s infinite ease-in-out;">
+            </div>
+            <p style="font-size: 1.3em; margin-bottom: 20px; line-height: 1.4;">"${data.msg}"</p>
+            <p style="color: #F1C40F; font-size: 0.9em; font-style: italic;">💡 ${data.sub}</p>
+        `,
+        confirmButtonText: 'ENTENDIDO',
+        background: '#0a0a0a',
+        color: '#fff',
+        allowOutsideClick: false,
+        customClass: { confirmButton: 'game-opt-btn aesthetic-btn' } // Use new styles for button
+    }).then(() => {
+        cambiarTurno();
+    });
+}
+
+
+function awardMedal(jugador) {
+    // Only current player gets the visual in sidebar locally?
+    // Actually sidebar is shared locally in this simple version
+    // Check if container exists
+    const container = document.getElementById('medals-row');
+    if (!container) return;
+
+    // Create medal element
+    const medal = document.createElement('div');
+    medal.innerText = "🏅";
+    medal.style.fontSize = "20px";
+    medal.style.filter = "drop-shadow(0 0 5px gold)";
+    medal.style.animation = "float 1s ease-in-out";
+    medal.title = `Medalla de ${jugador.nombre}`;
+
+    // Add to container
+    container.appendChild(medal);
+
+    // Optional: Limit number of medals shown to avoid overflow
+    if (container.children.length > 8) {
+        container.removeChild(container.firstChild);
+    }
+}
+
+// START SCREEN CAROUSEL LOGIC
+function startMenuCarousel() {
+    const leftContainer = document.getElementById('carousel-left');
+    const rightContainer = document.getElementById('carousel-right');
+    if (!leftContainer || !rightContainer) return;
+
+    // Pairs to cycle: Left [1,2], Right [3,4] (or mixed)
+    // Let's do: Left cycles 1->2->1... Right cycles 3->4->3...
+
+    let leftIdx = 1;
+    let rightIdx = 3;
+
+    function renderCard(container, id) {
+        const char = PERSONAJES[id];
+        container.style.opacity = 0;
+
+        setTimeout(() => {
+            container.innerHTML = `
+                <div class="carousel-role">${char.role}</div>
+                <div class="carousel-img" style="background-image: url('${char.img}');"></div>
+                <div class="carousel-name">${char.name}</div>
+                <div class="carousel-bio">${char.msg}</div>
+            `;
+            container.style.opacity = 1;
+        }, 500);
+    }
+
+    // Initial Render
+    renderCard(leftContainer, leftIdx);
+    renderCard(rightContainer, rightIdx);
+
+    // Loop
+    setInterval(() => {
+        leftIdx = leftIdx === 1 ? 2 : 1;
+        rightIdx = rightIdx === 3 ? 4 : 3;
+        renderCard(leftContainer, leftIdx);
+        renderCard(rightContainer, rightIdx);
+    }, 6000); // 6 seconds
+}
+
+// Initialize on Load
+window.addEventListener('load', () => {
+    // Other load logic exists, just ensuring this runs
+    setTimeout(startMenuCarousel, 1000); // Small delay to allow fade-in
+});
+
+// DEBUG FUNCTIONS (Existing below)
+
+window.teleportarManual = async function () {
+    const { value: casilla } = await Swal.fire({
+        title: 'TELEPORT DEBUG',
+        input: 'number',
+        inputLabel: 'Casilla destino (1-63)',
+        inputAttributes: { min: 1, max: 63, step: 1 },
+        background: '#000', color: '#0f0'
+    });
+
+    if (casilla) {
+        const jugador = jugadores[turnoActual];
+        const oldPos = jugador.posicion;
+        jugador.posicion = parseInt(casilla);
+        logSystem(`DEBUG: ${jugador.nombre} teleported to ${jugador.posicion}`);
+
+        // 1. Force Visual Update Immediately
+        actualizarPosicionesVisuales();
+
+        // 2. Wait for visual "jump" before triggering logic
+        setTimeout(() => {
+            verificarCasilla(jugador);
+        }, 500);
     }
 }

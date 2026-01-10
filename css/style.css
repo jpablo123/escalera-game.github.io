@@ -223,8 +223,9 @@ h1.game-title-ingame {
 /* --- TABLERO GOTHIC --- */
 .tablero-grid {
     /* Use vh for dynamic sizing based on screen height */
-    width: 75vh;
-    height: 75vh;
+    width: 100%;
+    /* Controlled by flex parent now */
+    height: 100%;
     /* Aspect ratio fallback */
     aspect-ratio: 1/1;
 
@@ -232,7 +233,8 @@ h1.game-title-ingame {
     background-image:
         linear-gradient(#333 1px, transparent 1px),
         linear-gradient(90deg, #333 1px, transparent 1px);
-    background-size: calc(75vh / 7) calc(75vh / 7);
+    background-size: 14.28% 14.28%;
+    /* 100% / 7 */
     /* Consistent grid size */
 
     display: grid;
@@ -249,9 +251,12 @@ h1.game-title-ingame {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.9);
     font-family: var(--font-secondary);
-    font-size: 18px;
+    font-size: clamp(20px, 3.5vh, 40px);
+    /* Responsive Text Increase */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000;
     position: relative;
     background: rgba(0, 0, 0, 0.7);
 }
@@ -566,22 +571,125 @@ h1.game-title-ingame {
 }
 
 /* --- UI PANELS --- */
-.sidebar {
-    background: rgba(0, 0, 0, 0.9);
-    border: 2px solid #333;
-    padding: 10px;
-    /* Reduced padding */
-    border-radius: 5px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-    width: 300px;
-    height: 75vh;
+/* --- UI PANELS (REDESIGN) --- */
+.three-col-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 98%;
+    max-width: 1600px;
+    margin: 0 auto;
+    align-items: flex-start;
+    /* Align top */
+    justify-content: center;
+    height: 85vh;
+    /* Fixed height for dashboard feel */
+}
+
+/* Sidebars Base */
+/* Sidebars Compact */
+.sidebar-left,
+.sidebar-right {
+    width: 200px;
+    /* Reduced from 280px */
+    min-width: 180px;
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; REMOVED to let flex-grow work on Log */
-    box-sizing: border-box;
-    overflow: hidden;
-    /* Prevent spill */
+    gap: 10px;
+    /* Reduced gap */
+    flex-shrink: 0;
+    height: 100%;
 }
+
+/* Panel Box (Compact) */
+.panel-box {
+    background: rgba(10, 10, 12, 0.95);
+    border: 2px solid #444;
+    border-radius: 6px;
+    padding: 10px;
+    /* Reduced padding */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Neon Borders for Panels */
+.sidebar-left .panel-box {
+    border-color: var(--p1-color);
+    box-shadow: 0 0 10px var(--p1-color);
+}
+
+.sidebar-right .panel-box {
+    border-color: var(--p3-color);
+    box-shadow: 0 0 10px var(--p3-color);
+}
+
+
+/* Board Wrapper (Centers and controls aspect) */
+.board-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 10px;
+}
+
+/* Tablero Grid Adjustment (Fluid & Stable Square) */
+.tablero-grid {
+    width: min(90vh, 100%);
+    /* Maximum 90% of viewport height or 100% width */
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Strictly Square */
+    margin: auto;
+
+    display: grid;
+    /* Grid columns defined in JS or inline if not here */
+
+    border: 4px solid #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    flex-shrink: 0;
+    /* Prevent crushing */
+
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .three-col-layout {
+        flex-direction: column;
+        height: auto;
+        align-items: center;
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        flex-direction: row;
+        /* Horizontal on mobile */
+    }
+
+    .panel-box {
+        height: auto;
+        min-height: 200px;
+    }
+
+    .tablero-grid {
+        width: 100%;
+        height: 60vh;
+        /* Force height on mobile */
+    }
+}
+
 
 .dado-container {
     background: #111;
@@ -1199,9 +1307,16 @@ body.swal2-shown {
     text-align: center;
     max-width: 800px;
     width: 90%;
+    /* Ensure it doesn't exceed screen height and allows scroll */
+    max-height: 90vh;
+    overflow-y: auto;
+    /* Custom scrollbar aesthetics for this container */
+    scrollbar-width: thin;
+    scrollbar-color: var(--p1-color) #000;
+
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; -- REMOVED to allow scroll */
 }
 
 .start-content::before {
@@ -1218,40 +1333,45 @@ body.swal2-shown {
     z-index: 10;
 }
 
+
 .intro-text-block p {
     font-family: 'VT323', monospace;
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 2.7vh, 1.5rem);
+    /* Auto-shrink on small height screens */
     color: #dfdfdf;
-    margin-bottom: 20px;
-    line-height: 1.4;
+    margin-bottom: 1.5vh;
+    line-height: 1.3;
     text-shadow: 2px 2px 0px #000;
 }
 
 .intro-text-block strong {
     color: var(--p1-color);
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .mission-box {
     border: 2px dashed var(--p2-color);
-    padding: 20px;
-    margin: 20px 0;
+    padding: 1.5vh;
+    margin: 1.5vh 0;
     background: rgba(0, 0, 0, 0.5);
     animation: pulseBorder 3s infinite;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .mission-box h2 {
     color: var(--p2-color);
     font-family: 'Press Start 2P', cursive;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
+    font-size: clamp(0.7rem, 2vh, 1.2rem);
+    /* Dynamic shrink */
+    margin-bottom: 10px;
 }
 
 .cero-violencia {
     color: var(--p4-color);
     /* Red/Orange */
     font-weight: bold;
-    font-size: 1.4em;
+    font-size: 1.3em;
     text-transform: uppercase;
     animation: flashText 2s infinite;
 }
@@ -1363,4 +1483,235 @@ body.swal2-shown {
     100% {
         transform: skew(0deg);
     }
+}
+
+/* --- COMPACT SIDEBAR (Responsive) --- */
+@media screen and (max-width: 1280px),
+screen and (max-height: 800px) {
+    .sidebar {
+        width: 180px !important;
+        padding: 5px !important;
+        background: rgba(0, 0, 0, 0.95);
+        /* darker to read better small */
+    }
+
+    .dado-container {
+        padding: 5px !important;
+        margin-bottom: 5px !important;
+        border-width: 2px !important;
+    }
+
+    .dado-numero {
+        font-size: 3vh !important;
+        min-height: 4vh !important;
+    }
+
+    .player-card {
+        padding: 4px !important;
+        font-size: 0.7rem !important;
+        justify-content: center;
+        /* Center icon when no text */
+    }
+
+    /* Hide names, show only Avatar + Status */
+    .player-name {
+        display: none !important;
+    }
+
+    .mini-avatar {
+        margin-right: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .log-content {
+        font-size: 10px !important;
+        padding: 5px !important;
+        line-height: 1.2;
+    }
+
+    .terminal-header {
+        font-size: 10px !important;
+        padding: 2px !important;
+    }
+
+    .btn-action {
+        padding: 8px 2px !important;
+        font-size: 10px !important;
+    }
+
+    .lista-jugadores {
+        gap: 2px !important;
+        margin-bottom: 5px !important;
+    }
+}
+
+/* --- START SCREEN RESPONSIVE OVERRIDES --- */
+.start-content {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 1vh 2vw !important;
+    /* Force reduced padding */
+    width: 95% !important;
+    max-height: 98vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.intro-text-block p {
+    font-size: clamp(0.9rem, 2.5vh, 1.4rem) !important;
+    margin-bottom: 1vh !important;
+}
+
+.game-title.glitch {
+    font-size: clamp(1.8rem, 5vh, 3rem) !important;
+    margin-bottom: 2vh !important;
+}
+
+.mission-box {
+    padding: 1vh !important;
+    margin: 1vh 0 !important;
+}
+
+.mission-box h2 {
+    font-size: clamp(0.8rem, 2vh, 1.1rem) !important;
+}
+
+.subtitle {
+    margin: 1vh 0 !important;
+    font-size: clamp(0.8rem, 2vh, 1rem) !important;
+}
+
+.player-selection {
+    margin-top: 1vh !important;
+}
+
+.start-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.start-content::-webkit-scrollbar-thumb {
+    background: var(--p1-color);
+    border-radius: 3px;
+}
+
+/* START SCREEN CAROUSEL */
+.char-carousel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 250px;
+    height: 70vh;
+    background: rgba(20, 20, 30, 0.85);
+    border: 2px solid #555;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.5s;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+    padding: 20px;
+    z-index: 10;
+}
+
+.char-carousel.left-carousel {
+    left: 4%;
+    border-color: #3498DB;
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+}
+
+.start-content {
+    /* Center without order */
+    position: relative;
+    z-index: 20;
+}
+
+.char-carousel.right-carousel {
+    right: 4%;
+    border-color: #9B59B6;
+    box-shadow: 0 0 20px rgba(155, 89, 182, 0.3);
+}
+
+.carousel-img {
+    width: 180px;
+    height: 180px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    margin-bottom: 20px;
+    animation: float 3s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+.carousel-role {
+    font-size: 0.8em;
+    color: #f1c40f;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.carousel-name {
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.carousel-bio {
+    font-size: 0.9em;
+    color: #ddd;
+    text-align: center;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* Responsive Hide */
+@media (max-width: 1300px) {
+    .char-carousel {
+        display: none !important;
+    }
+}
+
+/* --- ENHANCED UI TEXT SIZES (User Request) --- */
+.turno-info h3 {
+    font-size: 1.2rem !important;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+#nombre-jugador {
+    font-size: 1.8rem !important;
+    /* BIG Player Name */
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    margin-top: 5px;
+    display: block;
+}
+
+.dado-numero {
+    font-size: 5rem !important;
+    /* HUGE Dice */
+    height: 1.2em;
+    line-height: 1.2em;
+}
+
+#btn-lanzar {
+    font-size: 1.2rem !important;
+    padding: 15px 30px !important;
+    font-weight: bold;
+}
+
+.player-card .player-name {
+    font-size: 1.1rem !important;
+}
+
+.credits-box {
+    font-size: 0.8rem !important;
 }

@@ -40,31 +40,35 @@
 
     <!-- PANTALLA DE INICIO -->
     <div id="start-screen" class="start-screen" style="display: none;">
+        <!-- Left Carousel (Characters) -->
+        <div id="carousel-left" class="char-carousel left-carousel"></div>
+
         <div class="start-content">
             <h1 class="game-title glitch" data-text="MISIÓN CERO VIOLENCIA">MISIÓN CERO VIOLENCIA</h1>
-            
+
             <div class="intro-sequence">
                 <div class="intro-text-block fade-in-1">
                     <p>Bienvenido/a a <strong>MISIÓN CERO VIOLENCIA</strong><br>
-                    Estás a punto de ingresar a un juego donde cada paso cuenta.</p>
+                        Estás a punto de ingresar a un juego donde cada paso cuenta.</p>
                 </div>
 
                 <div class="intro-text-block fade-in-2">
                     <p>Aquí encontrarás retos, misiones, preguntas clave y portales especiales<br>
-                    que te invitarán a pensar, sentir y decidir con conciencia.</p>
+                        que te invitarán a pensar, sentir y decidir con conciencia.</p>
                 </div>
 
                 <div class="intro-text-block fade-in-3">
                     <p>No es solo avanzar: es reconocer emociones, cuestionar creencias<br>
-                    y descubrir nuevas formas de relacionarte sin violencia.</p>
+                        y descubrir nuevas formas de relacionarte sin violencia.</p>
                 </div>
 
                 <div class="mission-box fade-in-4">
                     <h2>🎯 TU MISIÓN</h2>
                     <p>Recorrer la escalera, superar retos, cruzar portales<br>
-                    y reconstruir el camino con decisiones correctas.</p>
+                        y reconstruir el camino con decisiones correctas.</p>
                     <p class="highlight-text">Si completas el recorrido, el mundo queda en<br>
-                    <span class="cero-violencia">CERO VIOLENCIA</span></p>
+                        <span class="cero-violencia">CERO VIOLENCIA</span>
+                    </p>
                 </div>
             </div>
 
@@ -78,6 +82,8 @@
                 </div>
             </div>
         </div>
+        <!-- Right Carousel -->
+        <div id="carousel-right" class="char-carousel right-carousel"></div>
     </div>
 
     <!-- MAIN GAME CONTAINER -->
@@ -90,31 +96,62 @@
 
         <h1 class="game-title-ingame">MISIÓN CERO VIOLENCIA</h1>
 
-        <div class="game-area">
-            <div id="tablero" class="tablero-grid"></div>
+        <div class="game-area three-col-layout">
+            <!-- LEFTSIDE: Players & Turn -->
+            <div class="sidebar-left">
+                <div class="panel-box">
+                    <div class="turno-info">
+                        <h3>TURNO DE:</h3>
+                        <div id="jugador-activo-avatar" class="avatar-display"></div>
+                        <span id="nombre-jugador">JUGADOR 1</span>
+                    </div>
 
-            <div class="sidebar">
-                <div class="turno-info">
-                    <h3>TURNO DE:</h3>
-                    <div id="jugador-activo-avatar" class="avatar-display"></div>
-                    <span id="nombre-jugador">JUGADOR 1</span>
+                    <div id="medals-row" class="medals-row"
+                        style="display: flex; gap: 5px; justify-content: center; margin: 10px 0; min-height: 25px;">
+                        <!-- Medals will appear here -->
+                    </div>
+
+                    <div id="lista-jugadores" class="lista-jugadores">
+                        <!-- Dynamic content -->
+                    </div>
+
+                    <div class="credits-box"
+                        style="margin-top: auto; padding-top: 15px; border-top: 1px solid #333; text-align: center; font-size: 0.7em; line-height: 1.4; color: #888;">
+                        <p style="margin: 2px 0;">CREADO POR:<br><strong style="color: #ddd;">JUAN PABLO SANABRIA
+                                MOSCOSO</strong></p>
+                        <p style="margin: 2px 0; margin-top: 5px;">PROPIEDAD INTELECTUAL:<br><strong
+                                style="color: #F39C12;">KAREN NATALIA ORDOÑEZ ROBLES</strong></p>
+                    </div>
                 </div>
+            </div>
 
-                <div class="dado-container">
-                    <div id="dado-visual" class="dado-numero">?</div>
-                    <button id="btn-lanzar" class="btn-action">TIRAR DADO</button>
-                </div>
+            <!-- CENTER: Board -->
+            <!-- CENTER: Board Wrapper -->
+            <div class="board-container">
+                <div id="tablero" class="tablero-grid"></div>
+            </div>
 
-                <!-- Player List Status -->
-                <div id="lista-jugadores" class="lista-jugadores">
-                    <!-- Dynamic content -->
-                </div>
+            <!-- RIGHTSIDE: Dice & Log -->
+            <div class="sidebar-right">
+                <div class="panel-box">
+                    <div class="dado-container">
+                        <div id="dado-visual" class="dado-numero">?</div>
+                        <button id="btn-lanzar" class="btn-action">TIRAR DADO</button>
+                    </div>
 
-                <!-- Mini Terminal Log -->
-                <div class="terminal-log-sidebar">
-                    <div class="terminal-header">REGISTRO DE MISIÓN</div>
-                    <div class="log-content" id="log-juego">
-                        <div class="log-line">> SISTEMA LISTO...</div>
+                    <div class="terminal-log-sidebar">
+                        <div class="terminal-header">REGISTRO DE MISIÓN</div>
+                        <div class="log-content" id="log-juego">
+                            <div class="log-line">> SISTEMA LISTO...</div>
+                        </div>
+                    </div>
+
+                    <!-- DEBUG ZONE -->
+                    <div class="debug-panel"
+                        style="margin-top: auto; border-top: 1px dashed #333; padding-top: 5px; text-align: center; opacity: 0.3; transition: opacity 0.3s;">
+                        <button onclick="teleportarManual()"
+                            style="background:#000; color: #0f0; border: 1px solid #0f0; font-family: monospace; font-size: 10px; cursor: pointer; padding: 2px 5px;">[DEBUG
+                            TELEPORT]</button>
                     </div>
                 </div>
             </div>
