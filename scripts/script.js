@@ -33,12 +33,22 @@ const adivinanzas = [
     },
     {
         pregunta: "Lo que duele aunque no toca:<br>No tiene manos ni pies,<br>pero puede dejar un moretón.<br>Sale por la boca de alguien<br>que no piensa con el corazón.<br>¿Qué es?",
-        respuestas: ["las palabras que lastiman", "palabras que lastiman", "palabras", "insultos", "malas palabras", "groserias", "gritos", "las palabras"]
+        respuestas: ["las palabras que lastiman", "palabras que lastiman", "palabras", "insultos", "malas palabras", "groserias", "gritos", "las palabras", "ofensas", "ofensa"]
     },
 
     {
-        pregunta: "En favor de la mujer:<br>Tengo voz y tengo derechos,<br>pienso, decido y sé elegir.<br>Merezco respeto y cuidado,<br>igualdad para poder vivir.<br>¿Quién soy?",
+        pregunta: "Igualdad y Derechos:<br>Tengo voz y tengo derechos,<br>pienso, decido y sé elegir.<br>Merezco respeto y cuidado,<br>igualdad para poder vivir.<br>¿Quién soy?",
         respuestas: ["la mujer", "una mujer", "mujer", "mujeres", "las mujeres"]
+    },
+    {
+        pregunta: "No controla, no duele y no impone.<br>Se demuestra con cuidado y libertad.<br>¿Qué es?",
+        respuestas: ["amor", "el amor", "amar"],
+        pista: "Crece cuando hay respeto y consentimiento."
+    },
+    {
+        pregunta: "No todo acto violento deja marcas visibles,<br>pero cuando cruza un límite legal,<br>¿cómo se define?",
+        respuestas: ["delito", "un delito", "crimen"],
+        pista: "Aparece en los códigos y puede ser castigado."
     }
 ];
 
@@ -47,23 +57,23 @@ const desbloqueos = [
     {
         id: "reto5",
         titulo: "RETO 5: DESBLOQUEA EL LÍMITE SANO",
-        pista: "Protegerse no es agredir ni controlar.",
-        palabra: "RESPETO",
-        mascara: "_ _ _ _ _ _ _",
+        pista: "Cuidarse no es dominar.<br>Es poner un ____ sano.",
+        palabra: "LIMITE",
+        mascara: "_ _ _ _ _ _",
         imagen: "./assets/sprites/shield_protection.png",
-        premioMsg: "¡ESCUDO COMPLETADO!",
-        premioDesc: "El escudo completo simboliza el autocuidado y el respeto mutuo. Avanzas 4 casillas.",
+        premioMsg: "¡LÍMITE SANO ESTABLECIDO!",
+        premioDesc: "Los límites sanos protegen sin controlar. Avanzas 4 casillas.",
         tipoVisual: "escudo"
     },
     {
         id: "reto6",
         titulo: "RETO 6: DESBLOQUEA LA EMOCIÓN",
-        pista: "No te hace débil sentirla, te hace humano.",
-        palabra: "MIEDO",
-        mascara: "_ _ _ _ _",
+        pista: "Aparezco cuando hay respeto y no hay miedo.<br>Soy señal de relaciones sin violencia.",
+        palabra: "ALEGRIA",
+        mascara: "_ _ _ _ _ _ _",
         imagen: "./assets/sprites/emotion_lock.png",
-        premioMsg: "¡COLOR RESTAURADO!",
-        premioDesc: "Reconocer tus emociones te da poder. Avanzas 4 casillas.",
+        premioMsg: "¡ALEGRÍA DESBLOQUEADA!",
+        premioDesc: "La alegría genuina nace de la libertad. Avanzas 4 casillas.",
         tipoVisual: "emocion"
     },
     {
@@ -81,66 +91,74 @@ const desbloqueos = [
 
 // Casillas Especiales (PORTALES, GUSANOS Y RETOS)
 const casillasEspeciales = {
-    // Retos distribuidos
-    1: { tipo: 'info', id: 1 }, // NEW (Reflexión)
-    2: { tipo: 'info', id: 2 }, // NEW (Reflexión)
-    3: { tipo: 'info', id: 3 }, // NEW (Reflexión) -> Was Reto (Moved to 57)
-    4: { tipo: 'info', id: 4 }, // NEW (Reflexión) -> Was Physio
-    5: { tipo: 'info', id: 5 }, // NEW (Reflexión)
-    6: { tipo: 'info', id: 6 }, // NEW (Reflexión) -> Was Reto
-    7: { tipo: 'info', id: 7 }, // NEW (Reflexión)
-    8: { tipo: 'info', id: 8 }, // NEW (Portal Info) -> Was Riddle (Moved to 17)
-    9: { tipo: 'info', id: 9 }, // NEW (Dato Curioso) -> Was Physio (Moved to 21)
-    10: { tipo: 'info', id: 10 }, // NEW (Portal Info) -> Was Portal (Moved to 29)
-    12: { tipo: 'info', id: 12 }, // NEW (Dato Curioso) -> Was Lock (Moved to 32)
-    15: { tipo: 'info', id: 15 }, // NEW (Reflexión Final) -> Was Snake (Moved to 34)
+    // === INFO DISTRIBUTED (Reflexiones & Datos) - Balanced ===
+    1: { tipo: 'info', id: 1 },
+    2: { tipo: 'info', id: 2 },
+    3: { tipo: 'info', id: 3 },
 
-    // MOVED MECHANICS (Preserving Gameplay Balance)
-    17: { tipo: 'adivinanza' }, // Moved from 8
-    21: { tipo: 'retoFisico' }, // Moved from 9
-    46: { tipo: 'portal', msg: '¡SALTO DIMENSIONAL!' }, // Moved from 29 (Requested)
-    32: { tipo: 'desbloqueo', id: 'reto5' }, // Moved from 12
-    34: { tipo: 'gusano', destino: 7, msg: '¡EL GUSANO TE DEVORA!' }, // Moved from 15
+    // FILLED GAPS (Requested)
+    4: { tipo: 'reto' },
+    5: { tipo: 'adivinanza' },
+    6: { tipo: 'reto' },
+    7: { tipo: 'retoFisico' },
+    8: { tipo: 'adivinanza' },
+    9: { tipo: 'reto' },
+    10: { tipo: 'reto' },
+    12: { tipo: 'adivinanza' },
 
-    // Existing Mapping (Unchanged)
+    // Spread out info to break chains and fill gaps
+    14: { tipo: 'info', id: 5 }, // Moved from 5
+    19: { tipo: 'info', id: 8 }, // Moved from 8
+    21: { tipo: 'info', id: 9 }, // Moved from 9
+    29: { tipo: 'info', id: 4 }, // BREAK CHAIN: 27(+2)
+    33: { tipo: 'info', id: 6 }, // BREAK CHAIN: 31(+2)
+    41: { tipo: 'info', id: 7 }, // Moved from 7
+    45: { tipo: 'info', id: 10 }, // Moved from 10
+    49: { tipo: 'info', id: 15 }, // Moved from 15
+
+    // === RETOS (Challenges) ===
     11: { tipo: 'reto' },
+    18: { tipo: 'reto' },
+    20: { tipo: 'reto' },
+    24: { tipo: 'reto' },
+    27: { tipo: 'reto' },
+    39: { tipo: 'reto' },
+    44: { tipo: 'reto' },
+    47: { tipo: 'reto' },
+    57: { tipo: 'reto' },
+
+    // === ADIVINANZAS ===
+    17: { tipo: 'adivinanza' },
+    22: { tipo: 'adivinanza' },
+    38: { tipo: 'adivinanza' },
+
+    // === FISICO ===
     13: { tipo: 'retoFisico' },
     16: { tipo: 'retoFisico' },
-    18: { tipo: 'reto' },
-    19: { tipo: 'retoFisico' },
-    20: { tipo: 'reto' },
-    22: { tipo: 'adivinanza' },
     23: { tipo: 'retoFisico' },
-    24: { tipo: 'reto' },
     26: { tipo: 'retoFisico' },
-    27: { tipo: 'reto' },
-    28: { tipo: 'desbloqueo', id: 'reto6' },
     31: { tipo: 'retoFisico' },
-    33: { tipo: 'reto' },
     37: { tipo: 'retoFisico' },
-    38: { tipo: 'adivinanza' },
-    39: { tipo: 'reto' },
-    42: { tipo: 'desbloqueo', id: 'reto7' },
     43: { tipo: 'retoFisico' },
-    44: { tipo: 'reto' },
-    48: { tipo: 'adivinanza' },
-    57: { tipo: 'reto' },
-    47: { tipo: 'reto' },
 
-    // Portales (Remaining)
-    14: { tipo: 'portal', msg: '¡AGUJERO DE GUSANO!' }, // Moved from 30 (Requested)
-    35: { tipo: 'portal', msg: '¡TELETRANSPORTACIÓN!' },
+    // === UNLOCKS ===
+    28: { tipo: 'desbloqueo', id: 'reto6' },
+    32: { tipo: 'desbloqueo', id: 'reto5' },
+    42: { tipo: 'desbloqueo', id: 'reto7' },
 
-    // Reto Maestro
+    // === MAESTRO & REGULATION ===
     36: { tipo: 'retoMaestro' },
-
-    // Retos de Regulación
-    30: { tipo: 'retoRegulacion', sub: 'pausa' }, // Moved from 14 (Swapped)
     25: { tipo: 'retoRegulacion', sub: 'transforma' },
+    30: { tipo: 'retoRegulacion', sub: 'pausa' },
     40: { tipo: 'retoRegulacion', sub: 'termometro' },
 
-    // Gusanos (Remaining)
-    45: { tipo: 'gusano', destino: 32, msg: '¡EL GUSANO TE ESCUPE!' }
+    // === PORTALS & HAZARDS ===
+    15: { tipo: 'portal', msg: '¡PORTAL CÓSMICO!' },
+    35: { tipo: 'portal', msg: '¡TELETRANSPORTACIÓN!' },
+    46: { tipo: 'portal', msg: '¡SALTO DIMENSIONAL!' },
+
+    34: { tipo: 'gusano', destino: 7, msg: '¡EL GUSANO TE DEVORA!' },
+    48: { tipo: 'gusano', destino: 32, msg: '¡EL GUSANO TE ESCUPE!' }
 };
 
 // ==========================================
@@ -267,6 +285,17 @@ document.querySelectorAll('.btn-select').forEach(btn => {
     });
 });
 
+// DEBUG MODE BUTTON
+const btnDebugMode = document.getElementById('btn-debug-mode');
+if (btnDebugMode) {
+    btnDebugMode.addEventListener('click', () => {
+        startScreen.style.display = 'none';
+        showLoading(() => {
+            iniciarJuego(4, true); // 4 players, debug mode enabled
+        });
+    });
+}
+
 // CHARACTER DATA (NUEVAS MASCULINIDADES)
 const PERSONAJES = {
     1: { name: "TOMÁS", img: "./assets/avatars/char_tomas.png", role: "Aprender a sentir", bio: "Tomás aprendió que expresar emociones no lo hace débil. Reconocer lo que siente le ayuda a no reaccionar con violencia.", msg: "Sentir es humano." },
@@ -275,7 +304,7 @@ const PERSONAJES = {
     4: { name: "LUCAS", img: "./assets/avatars/char_lucas.png", role: "Elegir no dañar", bio: "Lucas sabe manejar sus emociones sin lastimar a otros. Elegir respeto es su forma de ser fuerte.", msg: "La verdadera fuerza es no dañar." }
 };
 
-function iniciarJuego(num) {
+function iniciarJuego(num, debugMode = false) {
     jugadores = [];
     for (let i = 1; i <= num; i++) {
         const pData = PERSONAJES[i] || PERSONAJES[1]; // Fallback
@@ -295,6 +324,15 @@ function iniciarJuego(num) {
     actualizarListaJugadores();
     actualizarTurnoUI();
     logSystem("JUEGO INICIADO. JUGADORES: " + num);
+
+    // Enable debug panel if debug mode
+    if (debugMode) {
+        const debugPanel = document.getElementById('debug-panel');
+        if (debugPanel) {
+            debugPanel.style.display = 'block';
+            logSystem("🔧 MODO DEBUG ACTIVADO");
+        }
+    }
 
     if (audioIntro) {
         audioIntro.pause();
@@ -330,12 +368,13 @@ function crearTablero() {
                 div.classList.add('casilla-desbloqueo');
             } else if (casillasEspeciales[i].tipo === 'info') {
                 div.classList.add('casilla-info');
+                // Dynamic Icon based on ID or fallback
                 let icon = 'tile_reflection.png';
-                if ([8, 10, 11].includes(i)) icon = 'tile_info_portal.png';
-                else if ([9, 12, 13].includes(i)) icon = 'tile_fact.png';
-                // Fallback or specific logic
-                if (i === 8 || i === 10) icon = 'tile_info_portal.png';
-                else if (i === 9 || i === 12) icon = 'tile_fact.png';
+                const id = casillasEspeciales[i].id;
+
+                // Specific Icons (Portal: 8, 10; Fact: 9, 12, etc)
+                if ([8, 10, 4, 6].includes(i) || [8, 10].includes(id)) icon = 'tile_info_portal.png';
+                else if ([9, 12, 19, 21].includes(i) || [9, 12].includes(id)) icon = 'tile_fact.png';
 
                 div.style.backgroundImage = `url('./assets/sprites/${icon}')`;
                 div.style.backgroundSize = "cover";
@@ -375,39 +414,123 @@ function crearTablero() {
 
 function crearDebugUI() {
     const sidebar = document.querySelector('.sidebar');
-    if (!sidebar || document.getElementById('debug-panel')) return;
+    if (!sidebar) return;
 
-    const debugPanel = document.createElement('div');
-    debugPanel.id = 'debug-panel';
-    debugPanel.style.marginTop = '20px';
-    debugPanel.style.borderTop = '1px solid #444';
-    debugPanel.style.paddingTop = '10px';
-    debugPanel.innerHTML = `
-        <h3 style="font-size: 14px; text-transform: uppercase;">Debug Zone</h3>
-        <input type="number" id="debug-pos" placeholder="Casilla (1-49)" style="width: 80px; padding: 5px; background: #222; color: #fff; border: 1px solid #555;">
-        <button id="btn-teleport" class="btn-action" style="margin-top: 5px; font-size: 10px;">Teleport</button>
-    `;
-    sidebar.appendChild(debugPanel);
+    // Footer (always visible in left sidebar)
+    if (!document.getElementById('footer-credits')) {
+        const footer = document.createElement('div');
+        footer.id = 'footer-credits';
+        footer.style.marginTop = 'auto';
+        footer.style.paddingTop = '20px';
+        footer.style.borderTop = '1px solid #333';
+        footer.style.fontSize = '0.8em';
+        footer.style.color = '#777';
+        footer.style.textAlign = 'center';
+        footer.innerHTML = `
+            <p>© 2024 Misión Cero Violencia</p>
+            <p>Todos los derechos reservados.</p>
+        `;
+        sidebar.appendChild(footer);
+    }
 
-    document.getElementById('btn-teleport').addEventListener('click', () => {
-        const val = parseInt(document.getElementById('debug-pos').value);
+    // Keyboard Shortcut (CapsLock + D) to toggle debug panel
+    // Only attach once
+    if (!window.debugKeyListenerAttached) {
+        window.addEventListener('keydown', (e) => {
+            // Check for CapsLock + D
+            if (e.getModifierState && e.getModifierState('CapsLock') && (e.key === 'D' || e.key === 'd')) {
+                const debugPanel = document.getElementById('debug-panel');
+                if (debugPanel) {
+                    debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
+                    if (debugPanel.style.display === 'block') {
+                        logSystem('🔧 DEBUG PANEL ACTIVADO (Bloq Mayús + D para ocultar)');
+                        const inputDebug = document.getElementById('debug-pos');
+                        if (inputDebug) inputDebug.focus();
+                    }
+                }
+            }
+        });
+        window.debugKeyListenerAttached = true;
+    }
+}
+
+// Attach debug panel listeners when DOM is loaded
+window.addEventListener('DOMContentLoaded', () => {
+    attachDebugListeners();
+});
+
+// Also try to attach after a delay (backup)
+setTimeout(attachDebugListeners, 500);
+
+function attachDebugListeners() {
+    const debugPanel = document.getElementById('debug-panel');
+    const inputDebug = document.getElementById('debug-pos');
+    const btnTeleport = document.getElementById('btn-teleport');
+
+    if (!debugPanel || !inputDebug || !btnTeleport) {
+        console.log('Debug panel not ready yet');
+        return;
+    }
+
+    // Check if already attached
+    if (btnTeleport.dataset.listenerAttached === 'true') {
+        console.log('Debug listeners already attached');
+        return;
+    }
+
+    const executeTeleport = () => {
+        const val = parseInt(inputDebug.value);
+        console.log('Teleport clicked, value:', val);
+
         if (val >= 1 && val <= TOTAL_CASILLAS) {
             teleportarJugador(val);
+            inputDebug.value = '';
+        } else {
+            inputDebug.style.borderColor = '#f00';
+            setTimeout(() => { inputDebug.style.borderColor = '#0f0'; }, 500);
         }
-    });
+    };
+
+    // Attach click listener
+    btnTeleport.onclick = executeTeleport;
+    btnTeleport.dataset.listenerAttached = 'true';
+
+    // Enter key support
+    inputDebug.onkeypress = (e) => {
+        if (e.key === 'Enter') {
+            executeTeleport();
+        }
+    };
+
+    console.log('✅ Debug panel listeners attached successfully');
 }
 
 function teleportarJugador(destino) {
     const jugador = jugadores[turnoActual];
-    // Animate roughly
+
+    // Teleport player
     jugador.posicion = destino;
     actualizarPosicionesVisuales();
-    logSystem(`DEBUG: ${jugador.nombre} -> ${destino}`);
 
-    // Check if we teleported to >49 (Win scenario handled manually if entering 49)
+    // Log with tile type info
+    const casilla = casillasEspeciales[destino];
+    const tipoInfo = casilla ? ` [${casilla.tipo.toUpperCase()}]` : ' [NORMAL]';
+    logSystem(`🔧 DEBUG: ${jugador.nombre} → Casilla ${destino}${tipoInfo}`);
+
+    // Visual feedback
+    const casillaDiv = document.getElementById(`casilla-${destino}`);
+    if (casillaDiv) {
+        casillaDiv.style.boxShadow = '0 0 20px #0f0';
+        setTimeout(() => {
+            casillaDiv.style.boxShadow = '';
+        }, 1000);
+    }
+
+    // Execute tile logic
     if (destino === TOTAL_CASILLAS) {
         verificarFinalEvento(jugador);
     } else {
+        // This will trigger the tile's special event (portal, challenge, etc.)
         verificarCasilla(jugador);
     }
 }
@@ -598,11 +721,18 @@ async function verificarCasilla(jugador) {
         if (evento.tipo === 'portal') {
             sonido('powerup');
 
+            // Find random destination (avoid current position only)
             let destinoRandom;
+            let attempts = 0;
             do {
                 destinoRandom = Math.floor(Math.random() * TOTAL_CASILLAS) + 1;
-            } while (destinoRandom === jugador.posicion || casillasEspeciales[destinoRandom]);
-            // NOTE: We allowed landing on special squares for chain reactions!
+                attempts++;
+                // Safety: if we can't find after 50 tries, just pick any different tile
+                if (attempts > 50) {
+                    destinoRandom = (jugador.posicion % TOTAL_CASILLAS) + 1;
+                    break;
+                }
+            } while (destinoRandom === jugador.posicion);
 
             await Swal.fire({
                 title: evento.msg,
@@ -620,7 +750,7 @@ async function verificarCasilla(jugador) {
             jugador.posicion = destinoRandom;
             actualizarPosicionesVisuales();
 
-            // RECURSIVE CHECK
+            // RECURSIVE CHECK - Portal can chain to another portal/gusano
             setTimeout(() => verificarCasilla(jugador), 500);
 
         } else if (evento.tipo === 'gusano') {
@@ -990,10 +1120,9 @@ function processSuccess(jugador, premio) {
         if (jugador.posicion >= TOTAL_CASILLAS) {
             verificarFinalEvento(jugador);
         } else {
-            // CHAIN REACTION FIX: Check if we landed on another special tile!
-            // If the new tile is a challenge/portal, play it.
-            // If it's a normal tile, verifyCasilla will call cambiarTurno().
-            setTimeout(() => verificarCasilla(jugador), 500);
+            // STOP CHAIN REACTIONS ON SUCCESS (User Request)
+            // Just land and end turn.
+            cambiarTurno();
         }
     });
 }
@@ -1002,13 +1131,26 @@ function processFailure(jugador) {
     sonido('error');
     Swal.fire({
         title: '¡FALLASTE!',
-        text: 'Pierdes tu turno. Reflexiona para la próxima.',
+        text: 'Pierdes el equilibrio y retrocedes...',
         icon: 'error',
         background: '#080808',
         color: '#C0392B',
         confirmButtonText: 'ACEPTAR'
-    }).then(() => {
-        cambiarTurno();
+    }).then(async () => {
+        // Random move back (1-3 steps)
+        const pasos = Math.floor(Math.random() * 3) + 1;
+        jugador.posicion = Math.max(1, jugador.posicion - pasos);
+        actualizarPosicionesVisuales();
+
+        await delay(500);
+
+        // ONLY TRIGGER CHAIN IF PORTAL OR GUSANO
+        const casilla = casillasEspeciales[jugador.posicion];
+        if (casilla && (casilla.tipo === 'gusano' || casilla.tipo === 'portal')) {
+            verificarCasilla(jugador);
+        } else {
+            cambiarTurno();
+        }
     });
 }
 
@@ -1270,7 +1412,7 @@ const retoMaestroData = [
 
 function lanzarRetoMaestro2(jugador) {
     const reto = retoMaestroData[Math.floor(Math.random() * retoMaestroData.length)];
-    let timeLeft = 20; // Increased time
+    let timeLeft = 60; // INCREASED: User requested ample time like 60s
     let timerInterval;
     let userChoice = null; // Closure variable to track choice
 
@@ -1556,13 +1698,13 @@ function lanzarRetoRegulacion(jugador, subTipo) {
         Swal.fire({
             title: '¡BAJA LA INTENSIDAD!',
             html: `
-            < p > Estás en nivel < span id = "temp-val" style = "color: red; font-weight: bold;" > 10</span > de enojo.</p >
+                <p>Estás en nivel <span id="temp-val" style="color: red; font-weight: bold;">10</span> de enojo.</p>
                 <p>Bájalo a menos de 4 para continuar.</p>
                 <div style="width: 80%; height: 300px; background: #333; margin: 20px auto; position: relative; border-radius: 10px; overflow: hidden; border: 2px solid #555;">
                     <div id="thermometer-bar" style="width: 100%; height: 100%; background: linear-gradient(to top, #2ECC71, #F1C40F, #E74C3C); position: absolute; bottom: 0; transition: height 0.5s;"></div>
                     <div style="position: absolute; top: 50%; left: 0; width: 100%; border-top: 2px dashed #fff; opacity: 0.5;">META (Nivel 4)</div>
                 </div>
-                <button id="btn-breathe" class="swal2-confirm swal2-styled" style="background: #3498DB;">🌬️ RESPIRAR PROFUNDO</button>
+                <button id="btn-breathe" class="swal2-confirm swal2-styled game-opt-btn aesthetic-btn" style="background: #3498DB;">🌬️ RESPIRAR PROFUNDO</button>
             `,
             showConfirmButton: false,
             background: '#080808',
@@ -1647,27 +1789,22 @@ function lanzarInfoModal(jugador, id) {
 
 
 function awardMedal(jugador) {
-    // Only current player gets the visual in sidebar locally?
-    // Actually sidebar is shared locally in this simple version
-    // Check if container exists
+    // Track medals per player
+    if (!jugador.medals) jugador.medals = 0;
+    jugador.medals++;
+
     const container = document.getElementById('medals-row');
     if (!container) return;
 
-    // Create medal element
-    const medal = document.createElement('div');
-    medal.innerText = "🏅";
-    medal.style.fontSize = "20px";
-    medal.style.filter = "drop-shadow(0 0 5px gold)";
-    medal.style.animation = "float 1s ease-in-out";
-    medal.title = `Medalla de ${jugador.nombre}`;
-
-    // Add to container
-    container.appendChild(medal);
-
-    // Optional: Limit number of medals shown to avoid overflow
-    if (container.children.length > 8) {
-        container.removeChild(container.firstChild);
-    }
+    // Clear and show single emoji + counter
+    container.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 18px;">
+            <span style="filter: drop-shadow(0 0 5px gold);">🏅</span>
+            <span style="color: #F1C40F; font-weight: bold; font-family: 'Press Start 2P', monospace; font-size: 14px;">
+                x${jugador.medals}
+            </span>
+        </div>
+    `;
 }
 
 // START SCREEN CAROUSEL LOGIC
