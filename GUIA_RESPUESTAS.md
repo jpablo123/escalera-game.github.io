@@ -486,6 +486,6 @@ Mensaje de cierre sobre el compromiso con la no violencia.
 
 ---
 
-**© 2024 Misión Cero Violencia - Todos los derechos reservados**  
+**© 2026 Misión Cero Violencia - Todos los derechos reservados**  
 **Creado por:** Juan Pablo Sanabria Moscoso  
 **Propiedad Intelectual:** Karen Natalia Ordoñez Robles
